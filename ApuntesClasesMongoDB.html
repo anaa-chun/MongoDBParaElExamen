@@ -1,0 +1,717 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Apuntes Clases MongoDB</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1afc1017-243e-8024-8f75-c82fc3f2c852" class="page sans"><header><h1 class="page-title">Apuntes Clases MongoDB</h1><p class="page-description"></p></header><div class="page-body"><hr id="1afc1017-243e-80c8-ba61-fcd7dc486486"/><h1 id="1afc1017-243e-80bc-a8a7-c2f69712937f" class=""><strong>Conceptos básicos de MongoDB</strong></h1><ol type="1" id="1afc1017-243e-801b-9190-f145297268f1" class="numbered-list" start="1"><li><strong>Estructura de MongoDB</strong>:<ul id="1afc1017-243e-806d-9e8d-d45f13bd5fa7" class="bulleted-list"><li style="list-style-type:disc"><strong>Base de datos</strong>: Es el contenedor principal que almacena las colecciones.</li></ul><ul id="1afc1017-243e-806a-8aab-ffef7b7f6bf0" class="bulleted-list"><li style="list-style-type:disc"><strong>Colección</strong>: Equivalente a una tabla en bases de datos relacionales (SQL). Una colección almacena documentos.</li></ul><ul id="1afc1017-243e-80f8-ac16-e9a65792ae98" class="bulleted-list"><li style="list-style-type:disc"><strong>Documento</strong>: Equivalente a un registro o fila en una tabla SQL. Un documento es un conjunto de pares clave-valor en formato JSON (BSON en MongoDB).</li></ul><p id="1afc1017-243e-8061-b3ff-c5176b78ecf3" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-8079-bfa6-d5cf915b9b4f" class="numbered-list" start="2"><li><strong>Comandos básicos en MongoDB</strong>:<ul id="1afc1017-243e-80c5-bbf2-dd55cfe8bbb0" class="bulleted-list"><li style="list-style-type:disc"><code><strong>use &lt;nombre_bd&gt;</strong></code>: Selecciona una base de datos para trabajar con ella. Si no existe, la crea automáticamente.</li></ul><ul id="1afc1017-243e-80b8-95ed-d958b90e1d5b" class="bulleted-list"><li style="list-style-type:disc"><code><strong>db</strong></code>: Muestra el nombre de la base de datos actual.</li></ul><ul id="1afc1017-243e-80e5-af6e-cffad921b358" class="bulleted-list"><li style="list-style-type:disc"><code><strong>show collections</strong></code>: Muestra todas las colecciones en la base de datos actual.</li></ul><ul id="1afc1017-243e-8021-a9b5-df8882963ee0" class="bulleted-list"><li style="list-style-type:disc"><code><strong>db.dropDatabase()</strong></code>: Elimina la base de datos actual.</li></ul><ul id="1afc1017-243e-8042-adcf-cc525c825017" class="bulleted-list"><li style="list-style-type:disc"><code><strong>exit</strong></code>: Cierra la sesión de MongoDB.</li></ul><p id="1afc1017-243e-80e6-a108-cc4c44ca11aa" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-8041-a88c-db1b63e426db" class="numbered-list" start="3"><li><strong>Inserción de datos</strong>:<ul id="1afc1017-243e-804c-970e-d20c86e36cca" class="bulleted-list"><li style="list-style-type:disc"><code><strong>insertOne()</strong></code>: Inserta un solo documento en una colección.</li></ul><ul id="1afc1017-243e-8075-af08-c2c4c2f41240" class="bulleted-list"><li style="list-style-type:disc"><code><strong>insertMany()</strong></code>: Inserta varios documentos en una colección.</li></ul><ul id="1afc1017-243e-80f2-9a82-fa52f1c4095a" class="bulleted-list"><li style="list-style-type:disc">Si la colección no existe, MongoDB la crea automáticamente al insertar el primer documento.</li></ul><p id="1afc1017-243e-8095-bebb-ddbc76816725" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-8003-a926-c37383a7ccd0" class="numbered-list" start="4"><li><strong>Consulta de datos</strong>:<ul id="1afc1017-243e-8012-8196-fc128a012dcf" class="bulleted-list"><li style="list-style-type:disc"><code><strong>find()</strong></code>: Muestra todos los documentos en una colección. Equivalente a <code>SELECT *</code> en SQL.</li></ul><ul id="1afc1017-243e-80ab-a19e-f21e3a5eb0d6" class="bulleted-list"><li style="list-style-type:disc"><code><strong>find({filtro})</strong></code>: Filtra documentos según condiciones específicas. Por ejemplo:<br/>Esto devuelve solo los campos <br/><code>nombre</code> y <code>edad</code> de los usuarios con nombre &quot;Kain&quot;.<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1afc1017-243e-80ae-b0bf-c411b81b74f1" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">db.usuarios.find({ nombre: &quot;Kain&quot; }, { nombre: 1, edad: 1 })</code></pre></li></ul><ul id="1afc1017-243e-8087-9e31-d613ef83803d" class="bulleted-list"><li style="list-style-type:disc"><code><strong>findOne()</strong></code>: Devuelve el primer documento que coincide con el filtro.</li></ul><ul id="1afc1017-243e-8015-b3d4-e8f03ccca27a" class="bulleted-list"><li style="list-style-type:disc"><code><strong>count()</strong></code>: Cuenta el número de documentos que coinciden con un filtro.</li></ul><p id="1afc1017-243e-80bf-a3a3-f67dc8096772" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-8053-830f-e06fac5335fe" class="numbered-list" start="5"><li><strong>Actualización de datos</strong>:<ul id="1afc1017-243e-8074-8aeb-c1e5bbe45f53" class="bulleted-list"><li style="list-style-type:disc"><code><strong>updateOne()</strong></code>: Actualiza el primer documento que coincide con el filtro.</li></ul><ul id="1afc1017-243e-804c-b34b-fa7bc76c1709" class="bulleted-list"><li style="list-style-type:disc"><code><strong>updateMany()</strong></code>: Actualiza todos los documentos que coinciden con el filtro.</li></ul><ul id="1afc1017-243e-801b-8dc2-fe45b57976d5" class="bulleted-list"><li style="list-style-type:disc"><strong>Operadores de actualización</strong>:<ul id="1afc1017-243e-809b-8432-fa76ab95a69c" class="bulleted-list"><li style="list-style-type:circle"><code><strong>$set</strong></code>: Establece un nuevo valor para un campo.<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1afc1017-243e-8050-8b98-dd38702ba463" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">db.usuarios.updateOne({ edad: 20 }, { $set: { edad: 21 } })</code></pre></li></ul><ul id="1afc1017-243e-804a-a3c6-c85a1965e6f2" class="bulleted-list"><li style="list-style-type:circle"><code><strong>$inc</strong></code>: Incrementa el valor de un campo.<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1afc1017-243e-806d-89ef-d37ff9ca1f60" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">db.usuarios.updateMany({ edad: 12 }, { $inc: { edad: 3 } })</code></pre></li></ul><ul id="1afc1017-243e-8085-a577-f58b3576a980" class="bulleted-list"><li style="list-style-type:circle"><code><strong>$unset</strong></code>: Elimina un campo de un documento.</li></ul><p id="1afc1017-243e-806f-b955-e86b2e6234ac" class="">
+</p></li></ul></li></ol><ol type="1" id="1afc1017-243e-8097-8178-e4ec3284a753" class="numbered-list" start="6"><li><strong>Reemplazo de documentos</strong>:<ul id="1afc1017-243e-80a3-b921-e9285d71357e" class="bulleted-list"><li style="list-style-type:disc"><code><strong>replaceOne()</strong></code>: Reemplaza un documento completo por uno nuevo.</li></ul><p id="1afc1017-243e-8051-a477-fee3ff70ea55" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-80ad-a854-f698a697580c" class="numbered-list" start="7"><li><strong>Eliminación de datos</strong>:<ul id="1afc1017-243e-803c-929a-edee6ee16c52" class="bulleted-list"><li style="list-style-type:disc"><code><strong>deleteOne()</strong></code>: Elimina el primer documento que coincide con el filtro.</li></ul><ul id="1afc1017-243e-80c0-8a90-e27ee5874c10" class="bulleted-list"><li style="list-style-type:disc"><code><strong>deleteMany()</strong></code>: Elimina todos los documentos que coinciden con el filtro.</li></ul><p id="1afc1017-243e-8017-8ea4-fcf6cdac8b4e" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-809b-bdb4-e188d45ed94e" class="numbered-list" start="8"><li><strong>Operadores de consulta</strong>:<ul id="1afc1017-243e-8015-a16f-ed7f2b1266b5" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$eq</strong></code>: Igual a.</li></ul><ul id="1afc1017-243e-8035-a490-f1a999ce8ec8" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$ne</strong></code>: No igual a.</li></ul><ul id="1afc1017-243e-809e-9f8b-c436dbf07819" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$gt</strong></code>: Mayor que.</li></ul><ul id="1afc1017-243e-8067-bc97-f1f38d1337c1" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$gte</strong></code>: Mayor o igual que.</li></ul><ul id="1afc1017-243e-8019-a662-cbf21edabc7c" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$lt</strong></code>: Menor que.</li></ul><ul id="1afc1017-243e-8013-87a8-e239dede1ac2" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$lte</strong></code>: Menor o igual que.</li></ul><ul id="1afc1017-243e-80ee-9773-eb51890ff718" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$in</strong></code>: Encuentra documentos donde el valor del campo está en un conjunto específico.</li></ul><ul id="1afc1017-243e-800c-9690-e9f1666a88c7" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$nin</strong></code>: Encuentra documentos donde el valor del campo no está en un conjunto específico.</li></ul><ul id="1afc1017-243e-8079-8f65-e35fc7431592" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$and</strong></code>: Combina múltiples condiciones con un AND lógico.</li></ul><ul id="1afc1017-243e-803f-b03f-ebb1cbf22043" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$or</strong></code>: Combina múltiples condiciones con un OR lógico.</li></ul><ul id="1afc1017-243e-80cc-ac3d-cd61a538c2d9" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$exists</strong></code>: Filtra documentos donde un campo existe o no.</li></ul><ul id="1afc1017-243e-8085-86e1-fe4ebfb945f3" class="bulleted-list"><li style="list-style-type:disc"><code><strong>$expr</strong></code>: Permite comparar campos dentro de un documento. Por ejemplo:<br/>Esto devuelve los usuarios cuyo saldo es mayor que su deuda.<br/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1afc1017-243e-80ec-bda4-f3d2d5881f3f" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">db.usuarios.find({ $expr: { $gt: [&quot;$saldo&quot;, &quot;$deuda&quot;] } })</code></pre><p id="1afc1017-243e-80cd-8de6-e44fed6acde4" class="">
+</p></li></ul></li></ol><h3 id="1afc1017-243e-8086-bd52-c2e1972f4c9f" class=""><strong>Sintaxis y formato en MongoDB</strong></h3><ul id="1afc1017-243e-80a6-b291-ccbc79baf904" class="bulleted-list"><li style="list-style-type:disc">MongoDB utiliza una sintaxis basada en JSON (JavaScript Object Notation).</li></ul><ul id="1afc1017-243e-80c0-8138-d7abe2b84ae3" class="bulleted-list"><li style="list-style-type:disc">Los filtros y operaciones se escriben entre llaves <code>{}</code>.</li></ul><ul id="1afc1017-243e-80e0-b4ff-d7727ecfe9e4" class="bulleted-list"><li style="list-style-type:disc">Los operadores comienzan con el símbolo <code>$</code> (por ejemplo, <code>$set</code>, <code>$inc</code>, <code>$gt</code>).</li></ul><p id="1afc1017-243e-80e3-84d3-ffa2b40dfe14" class="">
+</p><h3 id="1afc1017-243e-8049-915e-cb07b2bf99fb" class=""><strong>Ejemplos prácticos</strong></h3><ol type="1" id="1afc1017-243e-8092-948a-ea33942878f7" class="numbered-list" start="1"><li><strong>Crear una colección e insertar documentos</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1afc1017-243e-806e-9abc-f8be6e5be29d" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">use mi_bd
+db.usuarios.insertOne({ nombre: &quot;Kain&quot;, edad: 20 })
+db.usuarios.insertMany([{ nombre: &quot;Ana&quot;, edad: 25 }, { nombre: &quot;Luis&quot;, edad: 30 }])</code></pre><p id="1afc1017-243e-8061-93b6-d3fab28b5145" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-80ce-a9b0-c060bcedb2a8" class="numbered-list" start="2"><li><strong>Consultar documentos</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1afc1017-243e-8085-bd6b-ca7509b998aa" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">db.usuarios.find({ edad: { $gt: 20 } })</code></pre><p id="1afc1017-243e-8009-8669-e97d6d9388ff" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-806f-8276-c21b4e770b7d" class="numbered-list" start="3"><li><strong>Actualizar documentos</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1afc1017-243e-807f-bfa1-f2145660acdc" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">db.usuarios.updateMany({ edad: 20 }, { $set: { edad: 21 } })</code></pre><p id="1afc1017-243e-80d1-bfc6-d36d1056081c" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-8095-b9a4-ca694a03aced" class="numbered-list" start="4"><li><strong>Eliminar documentos</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1afc1017-243e-80c0-bf66-fccb9aee8e7e" class="code"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">db.usuarios.deleteOne({ nombre: &quot;Kain&quot; })</code></pre></li></ol><p id="1afc1017-243e-80a9-8bab-fedaf36018a9" class="">
+</p><hr id="1afc1017-243e-802a-a8ef-e2b14a65135d"/><p id="1afc1017-243e-80b8-bc04-f318ac4da13d" class="">
+</p><h1 id="1afc1017-243e-802a-ad5b-f8dafba66b21" class=""><strong>Índices en Bases de Datos</strong></h1><ol type="1" id="1afc1017-243e-8097-84aa-c0220f6f6247" class="numbered-list" start="1"><li><strong>Definición de Índices</strong>:<ul id="1afc1017-243e-8019-a24c-f4b313f3c4b6" class="bulleted-list"><li style="list-style-type:disc">Un índice es un objeto que se crea en la base de datos para clasificar los registros en función de uno o varios atributos.</li></ul><ul id="1afc1017-243e-80a7-8950-f10cd3cc7fee" class="bulleted-list"><li style="list-style-type:disc">Su propósito principal es optimizar las consultas, haciendo que el motor de la base de datos las ejecute de manera más eficiente.</li></ul><ul id="1afc1017-243e-8071-bef9-dc517c7073c3" class="bulleted-list"><li style="list-style-type:disc">Los índices permiten evitar recorrer toda la tabla en tiempo de ejecución, ya que previamente se ha ordenado la información según el atributo o atributos seleccionados.</li></ul><p id="1afc1017-243e-8015-ac7d-dd619af995a3" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-80c7-a617-d92362c98323" class="numbered-list" start="2"><li><strong>Índices Compuestos</strong>:<ul id="1afc1017-243e-8035-8b35-e5c58a591ec7" class="bulleted-list"><li style="list-style-type:disc">Un índice compuesto es aquel que se crea sobre dos o más atributos de una tabla.</li></ul><ul id="1afc1017-243e-80c9-a1bb-ff73f5db8209" class="bulleted-list"><li style="list-style-type:disc">Esto es útil cuando las consultas frecuentes involucran múltiples columnas.</li></ul><p id="1afc1017-243e-803c-9331-e54901540fad" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-80a9-89db-d426b9b4b2d4" class="numbered-list" start="3"><li><strong>Operaciones con Índices</strong>:<ul id="1afc1017-243e-8031-a0fd-f00429bf3e2b" class="bulleted-list"><li style="list-style-type:disc"><strong>Creación de Índices</strong>: Se pueden crear índices sobre una colección o tabla, especificando los atributos relevantes.</li></ul><ul id="1afc1017-243e-80d7-b5cb-f0d82f7db03f" class="bulleted-list"><li style="list-style-type:disc"><strong>Eliminación de Índices</strong>: Los índices pueden eliminarse cuando ya no son necesarios.</li></ul><ul id="1afc1017-243e-80fa-99e5-f1b354529774" class="bulleted-list"><li style="list-style-type:disc"><strong>Listado de Índices</strong>: Es posible listar todos los índices creados dentro de una colección o tabla.</li></ul><p id="1afc1017-243e-80a6-8673-d86d43c62a8c" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-80d4-8851-cfa6f2968421" class="numbered-list" start="4"><li><strong>Uso de Índices en Consultas</strong>:<ul id="1afc1017-243e-80d2-987a-c24c4853d429" class="bulleted-list"><li style="list-style-type:disc">El motor de la base de datos utiliza automáticamente los índices para optimizar las consultas.</li></ul><ul id="1afc1017-243e-8009-9946-c34b7f115d1c" class="bulleted-list"><li style="list-style-type:disc">También es posible forzar a una consulta a usar un índice específico mediante la sintaxis adecuada (por ejemplo, en MongoDB, se puede especificar el índice con <code>.hint()</code>).</li></ul><p id="1afc1017-243e-806b-8473-df2488c12fb4" class="">
+</p></li></ol><h3 id="1afc1017-243e-8021-875a-eca7245ab2ec" class=""><strong>Agregaciones en MongoDB</strong></h3><ol type="1" id="1afc1017-243e-803b-b51f-f4b20504cbe9" class="numbered-list" start="1"><li><strong>Concepto de Agregaciones</strong>:<ul id="1afc1017-243e-80ec-8ad4-ecfbb3032c53" class="bulleted-list"><li style="list-style-type:disc">Las agregaciones permiten realizar operaciones complejas sobre los datos, estructurando la consulta en etapas o fases.</li></ul><ul id="1afc1017-243e-8040-9ab0-c90e12b7835f" class="bulleted-list"><li style="list-style-type:disc">Cada etapa realiza una operación específica, como filtrar, agrupar, ordenar o calcular valores.</li></ul><p id="1afc1017-243e-80bf-bdb9-d8c90cfd530e" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-80a1-9504-f0bbb752abea" class="numbered-list" start="2"><li><strong>Etapas de una Agregación</strong>:<ul id="1afc1017-243e-80f6-882e-dbac8c1260fc" class="bulleted-list"><li style="list-style-type:disc"><strong>Filtrado</strong>: Se seleccionan los documentos que cumplen ciertas condiciones (por ejemplo, filtrar usuarios mayores de 18 años).</li></ul><ul id="1afc1017-243e-8068-ba23-efc1022392e3" class="bulleted-list"><li style="list-style-type:disc"><strong>Agrupación</strong>: Los documentos se agrupan según un atributo (por ejemplo, agrupar usuarios por ciudad).</li></ul><ul id="1afc1017-243e-80ae-84d8-dab864ce029a" class="bulleted-list"><li style="list-style-type:disc"><strong>Cálculos</strong>: Se realizan operaciones como sumas, promedios o conteos sobre los grupos.</li></ul><ul id="1afc1017-243e-802f-9b9d-d589612074c4" class="bulleted-list"><li style="list-style-type:disc"><strong>Ordenación</strong>: Los resultados se ordenan según un criterio específico.</li></ul><p id="1afc1017-243e-8006-b92e-e4a03f8b95f2" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-80c2-82e8-cb96d6319b3e" class="numbered-list" start="3"><li><strong>Comparación con SQL</strong>:<ul id="1afc1017-243e-8092-88b6-e64e5259cd95" class="bulleted-list"><li style="list-style-type:disc">Las agregaciones en MongoDB son equivalentes a consultas complejas en SQL, pero se estructuran en etapas en lugar de una sola consulta.</li></ul><p id="1afc1017-243e-80e4-be51-d6f71922b812" class="">
+</p></li></ol><h3 id="1afc1017-243e-80ff-8eff-d45061527ff1" class=""><strong>Operadores en MongoDB</strong></h3><ol type="1" id="1afc1017-243e-803f-91ea-c430e03f7781" class="numbered-list" start="1"><li><strong>Operadores de Filtrado</strong>:<ul id="1afc1017-243e-8080-bd7a-e4a46550d997" class="bulleted-list"><li style="list-style-type:disc">El operador <code>$match</code> se utiliza para filtrar documentos, similar a la cláusula <code>WHERE</code> en SQL.</li></ul><ul id="1afc1017-243e-807e-b77e-db357577897d" class="bulleted-list"><li style="list-style-type:disc">Ejemplo: Filtrar usuarios por edad o ciudad.</li></ul><p id="1afc1017-243e-8089-a98e-dd002beb4037" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-806b-afef-d53d4122ba2e" class="numbered-list" start="2"><li><strong>Operadores de Agrupación</strong>:<ul id="1afc1017-243e-8047-80dc-dd817aabe542" class="bulleted-list"><li style="list-style-type:disc">El operador <code>$group</code> permite agrupar documentos según un atributo y realizar cálculos sobre los grupos.</li></ul><ul id="1afc1017-243e-80e1-bc5a-df41b45b30eb" class="bulleted-list"><li style="list-style-type:disc">Ejemplo: Contar cuántos usuarios hay en cada ciudad.</li></ul><p id="1afc1017-243e-8002-8a08-e4bbb71a83db" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-808e-b4f2-d99d1193f941" class="numbered-list" start="3"><li><strong>Operadores de Renombrado</strong>:<ul id="1afc1017-243e-80e7-acc9-fb847ceaf825" class="bulleted-list"><li style="list-style-type:disc">El operador <code>$project</code> permite renombrar atributos o modificar la estructura de los documentos de salida.</li></ul><ul id="1afc1017-243e-8083-ad0a-cfbec815c54a" class="bulleted-list"><li style="list-style-type:disc">Ejemplo: Combinar dos atributos (nombre y apellido) en uno solo (nombre completo).</li></ul><p id="1afc1017-243e-80a0-b9b3-e29de2a11a6b" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-801b-a90f-ede9a3d1147c" class="numbered-list" start="4"><li><strong>Operadores de Unión (Lookup)</strong>:<ul id="1afc1017-243e-80ee-a110-ee671deb7d69" class="bulleted-list"><li style="list-style-type:disc">El operador <code>$lookup</code> realiza una operación similar a un <code>JOIN</code> en SQL, permitiendo combinar datos de dos colecciones.</li></ul><ul id="1afc1017-243e-80a3-bc86-c3ec662d5972" class="bulleted-list"><li style="list-style-type:disc">Ejemplo: Unir la colección de usuarios con la colección de pedidos.</li></ul><p id="1afc1017-243e-80f0-9c81-efae234589fc" class="">
+</p></li></ol><h3 id="1afc1017-243e-80c7-8dd8-dacaeb9bab19" class=""><strong>Almacenamiento de Resultados</strong></h3><ol type="1" id="1afc1017-243e-805c-bf02-fa59003c0edd" class="numbered-list" start="1"><li><strong>Uso de </strong><code><strong>$merge</strong></code>:<ul id="1afc1017-243e-80fc-b134-ef760ea8bbb6" class="bulleted-list"><li style="list-style-type:disc">El operador <code>$merge</code> permite almacenar los resultados de una consulta en una nueva colección.</li></ul><ul id="1afc1017-243e-803c-b68e-fe168df2c553" class="bulleted-list"><li style="list-style-type:disc">Si la colección ya existe, los resultados se combinan con los datos existentes.</li></ul><ul id="1afc1017-243e-80f8-b6dc-c710ae27404c" class="bulleted-list"><li style="list-style-type:disc">Ejemplo: Almacenar el resultado de una agregación (como el conteo de usuarios por ciudad) en una nueva colección.</li></ul><p id="1afc1017-243e-8077-99fd-e3888191c29d" class="">
+</p></li></ol><h3 id="1afc1017-243e-80ae-9b97-f4cfaabf9a09" class=""><strong>Eficiencia en Consultas</strong></h3><ol type="1" id="1afc1017-243e-803d-a1ea-fde6c889bf26" class="numbered-list" start="1"><li><strong>Problema de Tablas Grandes</strong>:<ul id="1afc1017-243e-80be-b80e-d3e95882d1f9" class="bulleted-list"><li style="list-style-type:disc">Cuando una tabla tiene muchos registros y atributos, las consultas pueden volverse lentas.</li></ul><ul id="1afc1017-243e-803c-a8fb-dc3b4006f616" class="bulleted-list"><li style="list-style-type:disc">Los índices ayudan a optimizar estas consultas al reducir el tiempo de búsqueda.</li></ul><p id="1afc1017-243e-80b3-8cc2-c900d6129b9d" class="">
+</p></li></ol><ol type="1" id="1afc1017-243e-80a3-b99d-c56ca177eb9e" class="numbered-list" start="2"><li><strong>Ejemplo de Índice por Ciudad</strong>:<ul id="1afc1017-243e-8060-8b99-f241d5bbe4c3" class="bulleted-list"><li style="list-style-type:disc">Si se crea un índice sobre el atributo &quot;ciudad&quot;, la base de datos no necesita recorrer toda la tabla para encontrar los registros de una ciudad específica.</li></ul><ul id="1afc1017-243e-8088-adb2-ca0b6e278796" class="bulleted-list"><li style="list-style-type:disc">En su lugar, accede directamente a los registros ordenados en el índice.</li></ul><p id="1afc1017-243e-8062-968b-c8dd99e89f69" class="">
+</p></li></ol><h3 id="1afc1017-243e-8048-8781-d36010b2783b" class=""><strong>Resumen</strong></h3><ul id="1afc1017-243e-809b-945f-cbbf1ecee038" class="bulleted-list"><li style="list-style-type:disc">Los <strong>índices</strong> son herramientas esenciales para optimizar consultas en bases de datos, ya que permiten ordenar y acceder a los datos de manera más eficiente.</li></ul><p id="1afc1017-243e-8015-babf-c25e59c2d75c" class="">
+</p><ul id="1afc1017-243e-80ac-be28-ca5edf77a6f0" class="bulleted-list"><li style="list-style-type:disc">Las <strong>agregaciones</strong> en MongoDB permiten realizar consultas complejas estructuradas en etapas, similares a las operaciones de filtrado, agrupación y ordenación en SQL.</li></ul><p id="1afc1017-243e-8018-a37a-c12e93c82a3c" class="">
+</p><ul id="1afc1017-243e-80a2-9207-f0c04bea1cfb" class="bulleted-list"><li style="list-style-type:disc">Los <strong>operadores</strong> como <code>$match</code>, <code>$group</code>, <code>$project</code> y <code>$lookup</code> son fundamentales para manipular y analizar datos en MongoDB.</li></ul><p id="1afc1017-243e-80ff-94f5-dfd531eb42ca" class="">
+</p><ul id="1afc1017-243e-8013-b684-f3be026eeaea" class="bulleted-list"><li style="list-style-type:disc">El uso de índices y agregaciones mejora significativamente el rendimiento de las consultas, especialmente en tablas con grandes volúmenes de datos.</li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
